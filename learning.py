@@ -37,21 +37,21 @@ def home():
     #     return render_template("home.html",content = session["person"])
     return render_template("home.html",content = [1,2,3,4,5]) #"Hellow world <h1> ! <h1>"
 
-@app.route("/<name>")#thing between <> is passed to the page
-def user(name):
+@app.route("/MainMenu")#thing between <> is passed to the page
+def user():
     # session["person"] = name
     #address = wtforms.TextAreaField(u'Mailing Address', [wtforms.validators.optional(), wtforms.validators.length(max=200)])
     collection = db.TechnionFormulaAV.Messages.GPSSensor
     time = (collection.find_one()["header"])["timestamp"]
     time =  time[0:10]
-    return render_template("Main Menu.html",x = name, g = time)
+    return render_template("Main Menu.html", g = time)
 
 @app.route("/<time>")
 def datab(time):
     post_id = ObjectId("5ec16c5f801dc24573781066")
     collection = db.TechnionFormulaAV.Messages.GPSSensor
     id = (collection.find_one({"_id":post_id}))#["header"]
-    return render_template("index.html",online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
+    return render_template("State.html", Date = time)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
 
 @app.route("/admin")
 def admin():
