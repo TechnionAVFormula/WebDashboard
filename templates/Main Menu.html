@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Formula</title>
+    <!-- <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="assets/css/Navigation-Clean.css"> -->
+    <!-- <link rel="stylesheet" href="assets/css/styles-1.css"> -->
+    <!-- <link rel="stylesheet" href="assets/css/styles.css"> -->
+    <!-- <link rel="stylesheet" href="assets/css/Table-with-search-1-1.css"> -->
+    <!-- <link rel="stylesheet" href="assets/css/Tab  le-with-search-1.css"> -->
+
+
+    <link rel="stylesheet" href= "{{url_for('static', filename='bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='Navigation-Clean.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles-1.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='Table-with-search-1-1.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='Table-with-search-1.css')}}">
+</head>
+
+<body style="background: #00b2ff;">
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean">
+        <div class="container"><a class="navbar-brand" href="#">Formula Dashboard</a>
+            <ul class="nav navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="">Main Menu</a></li>
+                <li class="nav-item"><a class="nav-link" href="State.html">State</a></li>
+                <li class="nav-item"><a class="nav-link" href="Control.html">Control</a></li>
+            </ul>
+        </div>
+    </nav>
+    <h1>Main Menu</h1>
+    <div class="container" style="background: #ffffff;"><div>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+<div class="scrollit">
+<table id="myTable">
+  <tr class="header">
+    <th style="width:25%;">Name</th>
+    <th style="width:25%;">Country</th>
+    <th style="width:25%;">thing</th>
+    <th style="width:25%;">do</th>
+  </tr>
+  <tr>
+    <td><a href="State.html">{{g}} </a></td>
+    <td> NAIN</a></td>
+    <td>{{x}}</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Berglunds snabbkop</td>
+    <td>Sweden</td>
+    <td>{{x}}</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Island Trading</td>
+    <td>UK</td>
+    <td>{{x}}</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Koniglich Essen</td>
+    <td>Germany</td>
+    <td>{{x}}</td>
+    <td>Germany</td>
+  </tr>
+    <tr>
+    <td>Bob Jobs</td>
+    <td>UK</td>
+    <td>{{x}}</td>
+    <td>Germany</td>
+  </tr>
+    <tr>
+    <td>Steve Brooks</td>
+    <td>USA</td>
+    <td>{{x}}</td>
+    <td>Germany</td>
+  </tr>
+</table>
+</div>
+<!-- <script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/Table-with-search-1.js"></script>
+<script src="assets/js/test.js"></script> -->
+
+<script src="{{url_for('static', filename='jquery.min.js')}}"></script>
+<script src="{{url_for('static', filename='bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename='Table-with-search-1.js')}}"></script>
+<script src="{{url_for('static', filename='test.js')}}"></script>
+</body>
+</html>
