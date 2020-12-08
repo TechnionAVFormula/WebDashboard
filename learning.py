@@ -46,8 +46,8 @@ def user(name):
     time =  time[0:10]
     return render_template("Main Menu.html",x = name, g = time)
 
-@app.route("/State.html")
-def datab():
+@app.route("/<time>")
+def datab(time):
     post_id = ObjectId("5ec16c5f801dc24573781066")
     collection = db.TechnionFormulaAV.Messages.GPSSensor
     id = (collection.find_one({"_id":post_id}))#["header"]

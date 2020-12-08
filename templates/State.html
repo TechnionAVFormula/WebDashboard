@@ -4,13 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Formula</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/Navigation-Clean.css">
-    <link rel="stylesheet" href="assets/css/styles-1.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/Table-with-search-1-1.css">
-    <link rel="stylesheet" href="assets/css/Table-with-search-1.css">
+    <title>FormulaStates</title>
+    <link rel="stylesheet" href= "{{url_for('static', filename='bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='Navigation-Clean.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles-1.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='Table-with-search-1-1.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='Table-with-search-1.css')}}">
 </head>
 
 <body style="background: #00b2ff;">
@@ -23,12 +23,73 @@
             </ul>
         </div>
     </nav>
-    <h1>State</h1>
-    <p></p>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/Table-with-search-1.js"></script>
-    <script src="assets/js/test.js"></script>
+    <h1 style="display: inline;background-color: white;font-size: 1rem;">Date &amp; other identifier (simulation or real)</h1>
+    <div class="container" style="background-color: white;">
+        <nav class="navbar navbar-light navbar-expand-md">
+            <div class="container-fluid"><a class="navbar-brand" href="#">General</a>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr></tr>
+                        </thead>
+                        <tbody style="text-size-adjust: initial;">
+                            <tr>
+                                <td>Run Time: 1:00</td>
+                                <td>Actual steeering angle: 20 deg</td>
+                                <td>Latitude:<br>213213</td>
+                                <td>Temperature:<br>50 deg</td>
+                            </tr>
+                            <tr>
+                                <td>ActualSpeed: <br>10</td>
+                                <td>Battery:<br>60%</td>
+                                <td>Logetude:<br>343324</td>
+                                <td>Elevation:<br>43243 ft</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container" style="margin-top: 1rem;">
+        <h1 class="text-center" style="font-size: x-large;background-color: white;display: inline;">Cone Map</h1><iframe allowfullscreen="" frameborder="0" src="https://cdn.bootstrapstudio.io/placeholders/map.html" width="100%" height="400"></iframe>
+    </div>
+    <div class="container">
+        <h1 style="font-size: x-large;background-color: white;">Error section<br><br><br><br><br></h1>
+    </div>
+    <div class="container">
+        <h1 class="text-center" style="font-size: x-large;background-color: white;display: inline;">Camera View</h1>
+    </div>
+    <div class="container text-center"><img src="assets/img/6000196905775.jpg"></div>
+    <div class="container" style="background-color: white;">
+        <nav class="navbar navbar-light navbar-expand-md">
+            <div class="container-fluid"><a class="navbar-brand" href="#">Info</a>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr></tr>
+                        </thead>
+                        <tbody style="text-size-adjust: initial;">
+                            <tr>
+                                <td>State Machine</td>
+                                <td>motor signal </td>
+                                <td>solar 1</td>
+                            </tr>
+                            <tr>
+                                <td>sensors</td>
+                                <td>thrusters</td>
+                                <td>solar 2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <script src="{{url_for('static', filename='jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='Table-with-search-1.js')}}"></script>
+    <script src="{{url_for('static', filename='test.js')}}"></script>
 </body>
 
 </html>
