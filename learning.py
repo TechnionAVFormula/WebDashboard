@@ -44,7 +44,13 @@ def user():
     collection = db.TechnionFormulaAV.Messages.GPSSensor
     time = (collection.find_one()["header"])["timestamp"]
     time =  time[0:10]
-    return render_template("Main Menu.html", g = time)
+    row1 = "%s"%time
+    row2 = "hello"
+    row3 = "thing"
+    row4 = "doooooo"
+    rows = [row1,row2,row3,row4]
+    mulitiple = [rows,rows,rows,rows]
+    return render_template("Main Menu.html", g = time,simulations = mulitiple)
 
 @app.route("/<time>")
 def datab(time):

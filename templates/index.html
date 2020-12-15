@@ -1,5 +1,26 @@
 <html>
-    <p> {{online_users}}</p>
-    <p>{{y}}</p>
-    <p>{{g}}</p>
+    <!--<p> {{online_users}}</p>
+    <p>{{g}}</p> -->
+    <script src="{{url_for('static', filename = 'plotly-latest.min.js')}}"></script>
+    <body>
+ 
+        <div class="header">
+            <h2>
+                Plotly Chart Demo
+            </h2>
+        </div>
+     
+        <div id="chart" class="chart">
+        </div>
+     
+    </body>
+    <div>
+        <script type="text/javascript"></script>
+             
+            var graphs = graphJSON | safe;
+            
+            Plotly.plot('figure',graphs,{});        
+     
+        </script>
+    </div>
 </html>

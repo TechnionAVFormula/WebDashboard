@@ -44,7 +44,20 @@
   </tr>
   <tr>
     <td><a href="{{g}}">{{g}} </a></td>
-    <td> NAIN</a></td>
+    <td> <a>NAIN</a></td>
+    <td>{{x}}</td>
+    <td>Germany</td>
+  </tr>
+  {% for row in simulations %}
+    <tr>
+    {% for day in row %}
+      <td><a href="{{day}}">{{day}}</a></td>
+    {% endfor %}
+    </tr>
+  {% endfor %}
+  <tr>
+    <td>simulations[0] </a></td>
+    <td> <a>NAIN</a></td>
     <td>{{x}}</td>
     <td>Germany</td>
   </tr>

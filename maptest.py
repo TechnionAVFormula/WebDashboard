@@ -9,6 +9,12 @@ import plotly.graph_objects as go
 from flask import Flask
 from bson.objectid import ObjectId
 
+#generate url
+import chart_studio
+#import chart_studio.plotly as chart_studio
+chart_studio.tools.set_credentials_file(username='tomer1577', api_key='nMc8DayOGiC9knDWxmhQ')
+
+
 #import bootstrap
 #from flask.bootstrap import Bootstrap
 #import wtforms
@@ -25,28 +31,7 @@ client = pymongo.MongoClient(mongo_uri)
 db = client.formula_test
 db.list_collection_names()
 
-# @app.route("/")
-# def home():
-#     all_messages = db.TechnionFormulaAV.Messages.ConeMap
-#     yellow_cones = []
-#     blue_cones = []
-#     car =[]
-#     for obj in all_messages:
-#         cone_array = obj.data.cones
-#         for cone in cone_array:
-#             #if yellow
-#             if cone.type == "Yellow":
-#                 yellow_cones.append(cone)
-#             else:
-#                 blue_cones.append(cone)
-    
-#     for obj in yellow_cones:
-#         print(obj.coneId)
-    
-#     return render_template("index.html",online_user  = all_messages)
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
 
 
 all_messages = db.TechnionFormulaAV.Messages.ConeMap
@@ -113,7 +98,7 @@ fig_dict["layout"]["updatemenus"] = [
             }
         ],
         "direction": "left",
-        "pad": {"r": 10, "t": 87},
+        "pad": {"r": 5, "t": 87},#should be less i think
         "showactive": False,
         "type": "buttons",
         "x": 0.1,
@@ -133,8 +118,8 @@ sliders_dict = {
         "visible": True,
         "xanchor": "right"
     },
-    "transition": {"duration": 300, "easing": "cubic-in-out"},
-    "pad": {"b": 1, "t": 100},
+    "transition": {"duration": 100, "easing": "cubic-in-out"},#change 100 to 1 for reall time speed
+    "pad": {"b": 1, "t": 40},
     "len": 0.9,
     "x": 0.1,
     "y": 0,
@@ -166,7 +151,7 @@ for pointType in types:
     data_dict = {
         "x": xList,#list(dataset_by_time_and_cone[1]),
         "y": yList,
-        "mode": "markers",
+        "mode": "markers",#i think change to line here when car
         "text":tList,
         
         # "marker": {
@@ -179,10 +164,9 @@ for pointType in types:
     fig_dict["data"].append(data_dict)
 
 #make frames:
-print(len(timestampList))
-print(len(set(timestampList)))
+# print(len(timestampList))
+# print(len(set(timestampList)))
 
-i =0
 for timestamp in timestampList:
     #print(i)
     #i = i+1
@@ -205,13 +189,14 @@ for timestamp in timestampList:
             tList.append(ob['coneId'])
 
         data_dict = {
-            "x": xList,#list(dataset_by_time_and_cone[1]),
+            "x": xList,
             "y": yList,
             "mode": "markers",
             "text":tList,
             "name": pointType
         }
-        print(data_dict)
+        
+        #print(data_dict)
         frame["data"].append(data_dict)
     
     fig_dict["frames"].append(frame)
@@ -225,10 +210,22 @@ for timestamp in timestampList:
         "method": "animate"}
     sliders_dict["steps"].append(slider_step)
 
-print("stuk")
+#print("stuk")
 #print((fig_dict["frames"]))
 fig_dict["layout"]["sliders"] = [sliders_dict]
 
 fig = go.Figure(fig_dict)
 
-fig.show()
+url=chart_studio.plotly.plot(fig, filename = 'sup_bruh',auto_open = False)
+print(url)
+#fig.show()
+
+
+@app.route("/")
+def home():
+    
+    return render_template('State.html',url=url)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
