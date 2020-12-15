@@ -15,6 +15,10 @@ import wtforms
 #import open cv for picture color
 import numpy as np
 import cv2
+
+#import all the plotly stuff
+import maptest
+
 app = Flask(__name__)
 #ootstrap = Bootstrap(app)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/formula_test"
@@ -35,7 +39,8 @@ db.list_collection_names()
 def home():
     # if "person" in session:
     #     return render_template("home.html",content = session["person"])
-    return render_template("home.html",content = [1,2,3,4,5]) #"Hellow world <h1> ! <h1>"
+    return redirect(url_for("user"))
+    #return render_template("home.html",content = [1,2,3,4,5]) #"Hellow world <h1> ! <h1>"
 
 @app.route("/MainMenu")#thing between <> is passed to the page
 def user():
@@ -52,39 +57,20 @@ def user():
     mulitiple = [rows,rows,rows,rows]
     return render_template("Main Menu.html", g = time,simulations = mulitiple)
 
-@app.route("/<time>")
+@app.route("/State/<time>")
 def datab(time):
     post_id = ObjectId("5ec16c5f801dc24573781066")
     collection = db.TechnionFormulaAV.Messages.GPSSensor
     id = (collection.find_one({"_id":post_id}))#["header"]
-    return render_template("State.html", Date = time)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
+    return render_template("State.html", Date = time,url=maptest.url)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
 
 @app.route("/admin")
 def admin():
     return redirect(url_for("user", name = admin))#name of function to redirect to if function has parameters add after , 
-@app.route("/map")
-def map():
-    fig = go.Figure(go.Scattermapbox(
-        mode = "markers+lines",
-        lon = [10, 20, 30],
-        lat = [10, 20,30],
-        marker = {'size': 10}))
 
-    fig.add_trace(go.Scattermapbox(
-        mode = "markers+lines",
-        lon = [-50, -60,40],
-        lat = [30, 10, -20],
-        marker = {'size': 10}))
-
-    fig.update_layout(
-        margin ={'l':0,'t':0,'b':0,'r':0},
-        mapbox = {
-            'center': {'lon': 10, 'lat': 10},
-            'style': "stamen-terrain",
-            'center': {'lon': -20, 'lat': -20},
-            'zoom': 1})
-
-    fig.show()
+@app.route("/State")
+def State():
+    return render_template('State.html',url=maptest.url)
 #image = cv2.imread('images(1).jpg',cv2.IMREAD_COLOR)
 #@app.route("/image")
 #def images():
