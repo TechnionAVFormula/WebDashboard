@@ -20,6 +20,8 @@ chart_studio.tools.set_credentials_file(username='tomer1577', api_key='nMc8DayOG
 #import wtforms
 #import open cv for picture color
 import numpy as np
+#get ability to use local images as backround
+from PIL import Image
 #import cv2
 app = Flask(__name__)
 #ootstrap = Bootstrap(app)
@@ -38,37 +40,45 @@ all_messages = db.ConeInpictureTest
 yellow_cones = []
 blue_cones = []
 position=[]
-car =[]
 for obj in all_messages.find():
-    time = (obj['header'])['id']
+    id = (obj['header'])['id']
     cone_array = (obj['data'])['cones']
     for cone in cone_array:
         position.append(cone['x1'])
         position.append(cone['y1'])
+        position.append(cone['x2'])
+        position.append(cone['y2'])
         #if yellow
         if cone['type'] == "Yellow":
-            yellow_cones.append((cone,time))
+            yellow_cones.append((cone,id))
         else:
-            blue_cones.append((cone,time))
+            blue_cones.append((cone,id))
+
+def makedata(xList,yList,tList,pointType):
+    data= {
+        "x": xList,#list(dataset_by_time_and_cone[1]),
+        "y": yList,
+        "mode": 'lines+markers',#i think change to line here when car
+        "text":tList,
+        
+        
+        "name": pointType,
+        "fill": "toself"
+        # "marker": {
+        #    "sizemode": "area",
+        #    "sizeref": 200000,
+        #    "size": list(dataset_by_year_and_cont["pop"])
+        # },
+    }
+    return data
 
 # for obj in yellow_cones:
 #     print(obj['coneId'])
-start_of_time = 11
-end_of_time = 19
-#make list of timestamps
-timestampList = []  #year
-for obj in all_messages.find():
-    time = (obj['header'])['id']
-    #time.split("T")[0]
-    #time = time[start_of_time:end_of_time]
-    str(time)
-    timestampList.append(time)
 
-timestampList=list(set(timestampList))
-timestampList.sort()
+#make list of IDs
+idstampList = list(range(2,70))
 #make list of types of dots
 types = ["Blue", "Yellow"]#, "Car"]    continents 
-
 # make figure
 fig_dict = {
     "data": [],
@@ -76,8 +86,28 @@ fig_dict = {
     "frames": []
 }
 
+imagesList = []
+for i in idstampList:
+    if(i<10):
+        stri = '00'+str(i)
+    elif(i<100):
+        stri='0'+str(i)
+    else:
+        stri = str(i)
+    imagesList.append(dict(
+            source= Image.open('c:/Users/tbita/OneDrive/Documents/formula/dashboard/ezgif/ezgif-frame-'+stri+'.jpg'),
+            xref="x",
+            yref="y",
+            x=0,
+            y=28,
+            sizex=28,
+            sizey=28,
+            sizing="stretch",
+            opacity=1,
+            layer="below"))
 # fill in most of layout
 fig_dict["layout"]["xaxis"] = {"range": [min(position)-1, max(position)+1], "title": "X location"}
+#fig_dict["layout"]["images"] = imagesList
 fig_dict["layout"]["yaxis"] = {"range": [min(position)-1, max(position)+1], "title": "Y location"}
 fig_dict["layout"]["hovermode"] = "closest"
 fig_dict["layout"]["updatemenus"] = [
@@ -115,12 +145,12 @@ sliders_dict = {
     "xanchor": "left",
     "currentvalue": {
         "font": {"size": 20},
-        "prefix": "time:",
+        "prefix": "time:",#is actually id for now
         "visible": True,
         "xanchor": "right"
     },
-    "transition": {"duration": 100, "easing": "cubic-in-out"},#change 100 to 1 for reall time speed
-    "pad": {"b": 1, "t": 40},
+    "transition": {"duration": 0, "easing": "cubic-in-out"},#change 100 to 1 for reall time speed
+    "pad": {"b": 1, "t": 4},
     "len": 0.9,
     "x": 0.1,
     "y": 0,
@@ -129,7 +159,20 @@ sliders_dict = {
 
 #data
 #need to make 
-time = min(timestampList)
+def makeLists(xlist,ylist,tlist):
+    xlist.append(ob['x1'])
+    xlist.append(ob['x1'])
+    xlist.append(ob['x2'])
+    xlist.append(ob['x2'])
+    xlist.append('None')
+    ylist.append(ob['y1'])
+    ylist.append(ob['y2'])
+    ylist.append(ob['y2'])
+    ylist.append(ob['y1'])
+    ylist.append('None')
+
+    tList.append(ob['coneId'])
+time = min(idstampList)
 for pointType in types:
     
     tmp =  ((all_messages.find_one()['data'])['cones'])
@@ -140,43 +183,34 @@ for pointType in types:
     #     if(color == pointType):
     #         dataset_by_time_and_cone.append(obj)
     
-
     xList = []
     yList =[]
     tList=[]
     for ob in dataset_by_time_and_cone:
-        xList.append(ob['x1'])
-        yList.append(ob['y1'])
-        tList.append(ob['coneId'])
-
-    data_dict = {
-        "x1": xList,#list(dataset_by_time_and_cone[1]),
-        "y1": yList,
-        "mode": "markers",#i think change to line here when car
-        "text":tList,
-        
-        # "marker": {
-        #    "sizemode": "area",
-        #    "sizeref": 200000,
-        #    "size": list(dataset_by_year_and_cont["pop"])
-        # },
-        "name": pointType
-    }
+        makeLists(xList,yList,tList)
+    # print(xList)
+    data_dict = makedata(xList,yList,tList,pointType) 
+    
+    #data_dict = go.Scatter(data_dict2)
+    
+    #print(type(data_dict))
     fig_dict["data"].append(data_dict)
 
 #make frames:
 # print(len(timestampList))
 # print(len(set(timestampList)))
-
-for timestamp in timestampList:
+#print(idstampList)
+i=0
+for timestamp in idstampList:
     #print(i)
     #i = i+1
-    frame = {"data": [], "name": str(timestamp)}
+    frame = {"data": [], "name": str(timestamp), "layout": {}}
+    frame["layout"]["images"] = []
     for pointType in types:
-        current_message = [message for message in all_messages.find() if timestamp == (str((message['header'])['id']))
+        current_message = [message for message in all_messages.find() if str(timestamp) == (str((message['header'])['id']))]
         #current_cones = (current_message['data'])['cones']
         # print()
-        # print(current_message)
+        #print(current_message)
         # print()
         dataset_by_time_and_cone = [cone for cone in (((current_message[0])['data'])['cones']) if pointType == cone['type']]
         #print(dataset_by_time_and_cone)
@@ -185,21 +219,13 @@ for timestamp in timestampList:
         yList =[]
         tList=[]
         for ob in dataset_by_time_and_cone:
-            xList.append(ob['x1'])
-            yList.append(ob['y1'])
-            tList.append(ob['coneId'])
+            makeLists(xList,yList,tList)
 
-        data_dict = {
-            "x1": xList,
-            "y1": yList,
-            "mode": "markers",
-            "text":tList,
-            "name": pointType
-        }
+        data_dict = makedata(xList,yList,tList,pointType)
         
-        #print(data_dict)
         frame["data"].append(data_dict)
-    
+    frame["layout"]["images"].append(imagesList[i])
+    i+=1
     fig_dict["frames"].append(frame)
     slider_step = {"args": [
         [timestamp],
