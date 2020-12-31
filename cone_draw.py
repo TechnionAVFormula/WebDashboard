@@ -34,17 +34,17 @@ db.list_collection_names()
 
 
 
-all_messages = db.TechnionFormulaAV.Messages.ConeMap
+all_messages = db.ConeInpictureTest
 yellow_cones = []
 blue_cones = []
 position=[]
 car =[]
 for obj in all_messages.find():
-    time = (obj['header'])['timestamp']
+    time = (obj['header'])['id']
     cone_array = (obj['data'])['cones']
     for cone in cone_array:
-        position.append(cone['x'])
-        position.append(cone['y'])
+        position.append(cone['x1'])
+        position.append(cone['y1'])
         #if yellow
         if cone['type'] == "Yellow":
             yellow_cones.append((cone,time))
@@ -58,9 +58,10 @@ end_of_time = 19
 #make list of timestamps
 timestampList = []  #year
 for obj in all_messages.find():
-    time = (obj['header'])['timestamp']
+    time = (obj['header'])['id']
     #time.split("T")[0]
-    time = time[start_of_time:end_of_time]
+    #time = time[start_of_time:end_of_time]
+    str(time)
     timestampList.append(time)
 
 timestampList=list(set(timestampList))
@@ -144,13 +145,13 @@ for pointType in types:
     yList =[]
     tList=[]
     for ob in dataset_by_time_and_cone:
-        xList.append(ob['x'])
-        yList.append(ob['y'])
+        xList.append(ob['x1'])
+        yList.append(ob['y1'])
         tList.append(ob['coneId'])
 
     data_dict = {
-        "x": xList,#list(dataset_by_time_and_cone[1]),
-        "y": yList,
+        "x1": xList,#list(dataset_by_time_and_cone[1]),
+        "y1": yList,
         "mode": "markers",#i think change to line here when car
         "text":tList,
         
@@ -172,7 +173,7 @@ for timestamp in timestampList:
     #i = i+1
     frame = {"data": [], "name": str(timestamp)}
     for pointType in types:
-        current_message = [message for message in all_messages.find() if timestamp == ((message['header'])['timestamp'])[start_of_time:end_of_time]]
+        current_message = [message for message in all_messages.find() if timestamp == (str((message['header'])['id']))
         #current_cones = (current_message['data'])['cones']
         # print()
         # print(current_message)
@@ -184,13 +185,13 @@ for timestamp in timestampList:
         yList =[]
         tList=[]
         for ob in dataset_by_time_and_cone:
-            xList.append(ob['x'])
-            yList.append(ob['y'])
+            xList.append(ob['x1'])
+            yList.append(ob['y1'])
             tList.append(ob['coneId'])
 
         data_dict = {
-            "x": xList,
-            "y": yList,
+            "x1": xList,
+            "y1": yList,
             "mode": "markers",
             "text":tList,
             "name": pointType
@@ -218,22 +219,9 @@ fig = go.Figure(fig_dict)
 
 url=chart_studio.plotly.plot(fig, filename = 'sup_bruh',auto_open = False)
 print(url)
-
-# Add images
-fig.add_layout_image(
-        dict(
-            source="https://images.plot.ly/language-icons/api-home/python-logo.png",
-            xref="x",
-            yref="y",
-            x=0,
-            y=3,
-            sizex=2,
-            sizey=2,
-            sizing="stretch",
-            opacity=0.5,
-            layer="below")
-)
 fig.show()
+
+
 # @app.route("/")
 # def home():
     
