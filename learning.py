@@ -18,6 +18,7 @@ import cv2
 
 #import all the plotly stuff
 import maptest
+import cone_draw
 
 app = Flask(__name__)
 #ootstrap = Bootstrap(app)
@@ -62,7 +63,7 @@ def datab(time):
     post_id = ObjectId("5ec16c5f801dc24573781066")
     collection = db.TechnionFormulaAV.Messages.GPSSensor
     id = (collection.find_one({"_id":post_id}))#["header"]
-    return render_template("State.html", Date = time,url=maptest.url)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
+    return render_template("State.html", Date = time)#,urlmap=maptest.url,urlcamera = cone_draw.url)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
 
 @app.route("/admin")
 def admin():
@@ -70,7 +71,7 @@ def admin():
 
 @app.route("/State")
 def State():
-    return render_template('State.html',url=maptest.url)
+    return render_template('State.html')#,urlmap=maptest.url,urlcamera = cone_draw.url)
 #image = cv2.imread('images(1).jpg',cv2.IMREAD_COLOR)
 #@app.route("/image")
 #def images():

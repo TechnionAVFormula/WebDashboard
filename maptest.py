@@ -4,6 +4,7 @@ import pymongo
 #probobly dont need
 from flask import Flask, redirect,url_for,render_template, session
 import plotly.graph_objects as go
+import plotly.io as pio
 
 #import flsk
 from flask import Flask
@@ -215,25 +216,13 @@ for timestamp in timestampList:
 fig_dict["layout"]["sliders"] = [sliders_dict]
 
 fig = go.Figure(fig_dict)
-
-url=chart_studio.plotly.plot(fig, filename = 'sup_bruh',auto_open = False)
-print(url)
+#fig <- fig %>% plotly.toWebGL()
+pio.write_html(fig, file='../tomer_git/WebDashboard/static/cone_map.html',auto_play = False)#, auto_open=True)
+#url=chart_studio.plotly.plot(fig, filename = 'map_test2',auto_open = False,render_mode = 'webgl')
+#print(url)
 
 # Add images
-fig.add_layout_image(
-        dict(
-            source="https://images.plot.ly/language-icons/api-home/python-logo.png",
-            xref="x",
-            yref="y",
-            x=0,
-            y=3,
-            sizex=2,
-            sizey=2,
-            sizing="stretch",
-            opacity=0.5,
-            layer="below")
-)
-fig.show()
+#fig.show()
 # @app.route("/")
 # def home():
     

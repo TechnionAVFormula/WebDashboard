@@ -15,7 +15,7 @@
 
 <body style="background: #00b2ff;">
     <nav class="navbar navbar-light navbar-expand-md navigation-clean">
-        <div class="container"><a class="navbar-brand" href="#">Formula Dashboard</a>
+        <div class="container"><a class="navbar-brand" href="/MainMenu">Formula Dashboard</a>
             <ul class="nav navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="/MainMenu">Main Menu</a></li>
                 <li class="nav-item"><a class="nav-link" href="/State">State</a></li>
@@ -64,10 +64,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col"><img src="{{url_for('static', filename = '6000196905775.jpg')}}"></div>
             <div class="col">
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe frameborder='0' scrolling='no' src='{{url}}' class="embed-responsive-item" style="border:none;" ></iframe>
+                    <iframe frameborder='0' scrolling='no' src="{{url_for('static', filename='picture_test.html')}}" class="embed-responsive-item" style="border:none;" ></iframe>
+                </div>
+            </div>
+            <div class="col">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe frameborder='0' scrolling='no' src="{{url_for('static', filename='cone_map.html')}}" class="embed-responsive-item" style="border:none;" ></iframe>
                 </div>
             </div>
         </div>

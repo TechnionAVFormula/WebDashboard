@@ -4,6 +4,7 @@ import pymongo
 #probobly dont need
 from flask import Flask, redirect,url_for,render_template, session
 import plotly.graph_objects as go
+import plotly.io as pio
 
 #import flsk
 from flask import Flask
@@ -76,7 +77,7 @@ def makedata(xList,yList,tList,pointType):
 #     print(obj['coneId'])
 
 #make list of IDs
-idstampList = list(range(2,70))
+idstampList = list(range(2,200))
 #make list of types of dots
 types = ["Blue", "Yellow"]#, "Car"]    continents 
 # make figure
@@ -106,24 +107,24 @@ for i in idstampList:
             opacity=1,
             layer="below"))
 # fill in most of layout
-fig_dict["layout"]["xaxis"] = {"range": [min(position)-1, max(position)+1], "title": "X location"}
+fig_dict["layout"]["xaxis"] = {"range": [min(position)-1, max(position)+1],"showgrid":False}
 #fig_dict["layout"]["images"] = imagesList
-fig_dict["layout"]["yaxis"] = {"range": [min(position)-1, max(position)+1], "title": "Y location"}
+fig_dict["layout"]["yaxis"] = {"range": [min(position)-1, max(position)+1],"showgrid":False}
 fig_dict["layout"]["hovermode"] = "closest"
 fig_dict["layout"]["updatemenus"] = [
     {
         "buttons": [
             {
-                "args": [None, {"frame": {"duration": 500, "redraw": False},
-                                "fromcurrent": True, "transition": {"duration": 300,
+                "args": [None, {"frame": {"duration": 1, "redraw": False},
+                                "fromcurrent": True, "transition": {"duration": 1,
                                                                     "easing": "quadratic-in-out"}}],
                 "label": "Play",
                 "method": "animate"
             },
             {
-                "args": [[None], {"frame": {"duration": 0, "redraw": False},
+                "args": [[None], {"frame": {"duration": 1, "redraw": False},
                                   "mode": "immediate",
-                                  "transition": {"duration": 0}}],
+                                  "transition": {"duration": 1}}],
                 "label": "Pause",
                 "method": "animate"
             }
@@ -149,7 +150,7 @@ sliders_dict = {
         "visible": True,
         "xanchor": "right"
     },
-    "transition": {"duration": 0, "easing": "cubic-in-out"},#change 100 to 1 for reall time speed
+    "transition": {"duration": 1, "easing": "cubic-in-out"},#change 100 to 1 for reall time speed
     "pad": {"b": 1, "t": 4},
     "len": 0.9,
     "x": 0.1,
@@ -229,9 +230,9 @@ for timestamp in idstampList:
     fig_dict["frames"].append(frame)
     slider_step = {"args": [
         [timestamp],
-        {"frame": {"duration": 300, "redraw": False},#change duration
+        {"frame": {"duration": 1, "redraw": False},#change duration for real speed
          "mode": "immediate",
-         "transition": {"duration": 300}}
+         "transition": {"duration": 1}}#and here
     ],
         "label": timestamp,
         "method": "animate"}
@@ -242,10 +243,10 @@ for timestamp in idstampList:
 fig_dict["layout"]["sliders"] = [sliders_dict]
 
 fig = go.Figure(fig_dict)
-
-url=chart_studio.plotly.plot(fig, filename = 'sup_bruh',auto_open = False)
-print(url)
-fig.show()
+pio.write_html(fig, file='../tomer_git/WebDashboard/static/picture_test.html',auto_play = False)#, auto_open=True)
+#url=chart_studio.plotly.plot(fig, filename = 'picture_test',auto_open = False,render_mode = 'webgl')
+#print(url)
+#fig.show()
 
 
 # @app.route("/")
