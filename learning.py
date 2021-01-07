@@ -63,6 +63,8 @@ def datab(time):
     post_id = ObjectId("5ec16c5f801dc24573781066")
     collection = db.TechnionFormulaAV.Messages.GPSSensor
     id = (collection.find_one({"_id":post_id}))#["header"]
+    maptest.mapout()
+    cone_draw.coneout()
     return render_template("State.html", Date = time)#,urlmap=maptest.url,urlcamera = cone_draw.url)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
 
 @app.route("/admin")
@@ -71,11 +73,9 @@ def admin():
 
 @app.route("/State")
 def State():
-    return render_template('State.html')#,urlmap=maptest.url,urlcamera = cone_draw.url)
-#image = cv2.imread('images(1).jpg',cv2.IMREAD_COLOR)
-#@app.route("/image")
-#def images():
-#    return cv2.imshow('image',image)
+    maptest.mapout()
+    cone_draw.coneout()
+    return render_template('State.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

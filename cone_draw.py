@@ -37,6 +37,13 @@ db.list_collection_names()
 
 
 
+debug = False
+
+
+
+
+
+
 all_messages = db.ConeInpictureTest
 yellow_cones = []
 blue_cones = []
@@ -73,94 +80,9 @@ def makedata(xList,yList,tList,pointType):
     }
     return data
 
-# for obj in yellow_cones:
-#     print(obj['coneId'])
-
-#make list of IDs
-idstampList = list(range(2,200))
-#make list of types of dots
-types = ["Blue", "Yellow"]#, "Car"]    continents 
-# make figure
-fig_dict = {
-    "data": [],
-    "layout": {},
-    "frames": []
-}
-
-imagesList = []
-for i in idstampList:
-    if(i<10):
-        stri = '00'+str(i)
-    elif(i<100):
-        stri='0'+str(i)
-    else:
-        stri = str(i)
-    imagesList.append(dict(
-            source= Image.open('c:/Users/tbita/OneDrive/Documents/formula/dashboard/ezgif/ezgif-frame-'+stri+'.jpg'),
-            xref="x",
-            yref="y",
-            x=0,
-            y=28,
-            sizex=28,
-            sizey=28,
-            sizing="stretch",
-            opacity=1,
-            layer="below"))
-# fill in most of layout
-fig_dict["layout"]["xaxis"] = {"range": [min(position)-1, max(position)+1],"showgrid":False}
-#fig_dict["layout"]["images"] = imagesList
-fig_dict["layout"]["yaxis"] = {"range": [min(position)-1, max(position)+1],"showgrid":False}
-fig_dict["layout"]["hovermode"] = "closest"
-fig_dict["layout"]["updatemenus"] = [
-    {
-        "buttons": [
-            {
-                "args": [None, {"frame": {"duration": 1, "redraw": False},
-                                "fromcurrent": True, "transition": {"duration": 1,
-                                                                    "easing": "quadratic-in-out"}}],
-                "label": "Play",
-                "method": "animate"
-            },
-            {
-                "args": [[None], {"frame": {"duration": 1, "redraw": False},
-                                  "mode": "immediate",
-                                  "transition": {"duration": 1}}],
-                "label": "Pause",
-                "method": "animate"
-            }
-        ],
-        "direction": "left",
-        "pad": {"r": 5, "t": 87},#should be less i think
-        "showactive": False,
-        "type": "buttons",
-        "x": 0.1,
-        "xanchor": "right",
-        "y": 0,
-        "yanchor": "top"
-    }
-]
-
-sliders_dict = {
-    "active": 0,
-    "yanchor": "top",
-    "xanchor": "left",
-    "currentvalue": {
-        "font": {"size": 20},
-        "prefix": "time:",#is actually id for now
-        "visible": True,
-        "xanchor": "right"
-    },
-    "transition": {"duration": 1, "easing": "cubic-in-out"},#change 100 to 1 for reall time speed
-    "pad": {"b": 1, "t": 4},
-    "len": 0.9,
-    "x": 0.1,
-    "y": 0,
-    "steps": []
-}
-
 #data
 #need to make 
-def makeLists(xlist,ylist,tlist):
+def makeLists(xlist,ylist,tlist,ob):
     xlist.append(ob['x1'])
     xlist.append(ob['x1'])
     xlist.append(ob['x2'])
@@ -172,82 +94,172 @@ def makeLists(xlist,ylist,tlist):
     ylist.append(ob['y1'])
     ylist.append('None')
 
-    tList.append(ob['coneId'])
-time = min(idstampList)
-for pointType in types:
-    
-    tmp =  ((all_messages.find_one()['data'])['cones'])
-    dataset_by_time_and_cone = [cone for cone in tmp if pointType == cone['type']]
-    
-    # for obj in tmp:
-    #     color = obj['type']
-    #     if(color == pointType):
-    #         dataset_by_time_and_cone.append(obj)
-    
-    xList = []
-    yList =[]
-    tList=[]
-    for ob in dataset_by_time_and_cone:
-        makeLists(xList,yList,tList)
-    # print(xList)
-    data_dict = makedata(xList,yList,tList,pointType) 
-    
-    #data_dict = go.Scatter(data_dict2)
-    
-    #print(type(data_dict))
-    fig_dict["data"].append(data_dict)
+    tlist.append(ob['coneId'])
+# for obj in yellow_cones:
+#     print(obj['coneId'])
+def coneout():
 
-#make frames:
-# print(len(timestampList))
-# print(len(set(timestampList)))
-#print(idstampList)
-i=0
-for timestamp in idstampList:
-    #print(i)
-    #i = i+1
-    frame = {"data": [], "name": str(timestamp), "layout": {}}
-    frame["layout"]["images"] = []
+    #make list of IDs
+    idstampList = list(range(2,200))
+    #make list of types of dots
+    types = ["Blue", "Yellow"]#, "Car"]    continents 
+    # make figure
+    fig_dict = {
+        "data": [],
+        "layout": {},
+        "frames": []
+    }
+
+    imagesList = []
+    for i in idstampList:
+        if(i<10):
+            stri = '00'+str(i)
+        elif(i<100):
+            stri='0'+str(i)
+        else:
+            stri = str(i)
+        imagesList.append(dict(
+                source= Image.open('c:/Users/tbita/OneDrive/Documents/formula/dashboard/ezgif/ezgif-frame-'+stri+'.jpg'),
+                xref="x",
+                yref="y",
+                x=0,
+                y=28,
+                sizex=28,
+                sizey=28,
+                sizing="stretch",
+                opacity=1,
+                layer="below"))
+    # fill in most of layout
+    fig_dict["layout"]["xaxis"] = {"range": [min(position)-1, max(position)+1],"showgrid":False}
+    #fig_dict["layout"]["images"] = imagesList
+    fig_dict["layout"]["yaxis"] = {"range": [min(position)-1, max(position)+1],"showgrid":False}
+    fig_dict["layout"]["hovermode"] = "closest"
+    fig_dict["layout"]["margin"] = dict(l=1, r=1, t=1, b=1)
+    fig_dict["layout"]["updatemenus"] = [
+        {
+            "buttons": [
+                {
+                    "args": [None, {"frame": {"duration": 1, "redraw": False},
+                                    "fromcurrent": True, "transition": {"duration": 1,
+                                                                        "easing": "quadratic-in-out"}}],
+                    "label": "Play",
+                    "method": "animate"
+                },
+                {
+                    "args": [[None], {"frame": {"duration": 1, "redraw": False},
+                                    "mode": "immediate",
+                                    "transition": {"duration": 1}}],
+                    "label": "Pause",
+                    "method": "animate"
+                }
+            ],
+            "direction": "left",
+            "pad": {"r": 0, "t": 0},#should be less i think
+            "showactive": False,
+            "type": "buttons",
+            "x": 0.1,
+            "xanchor": "right",
+            "y": 0,
+            "yanchor": "bottom"
+        }
+    ]
+
+    sliders_dict = {
+        "active": 0,
+        "yanchor": "bottom",
+        "xanchor": "left",
+        "currentvalue": {
+            "font": {"size": 10},
+            "prefix": "time:",#is actually id for now
+            "visible": False,
+            "xanchor": "left"
+        },
+        "transition": {"duration": 1, "easing": "cubic-in-out"},#change 100 to 1 for reall time speed
+        "pad": {"b": 0, "t": 0},
+        "len": 0.9,
+        "x": 0.1,
+        "y": 0,
+        "steps": []
+    }
+
+    time = min(idstampList)
     for pointType in types:
-        current_message = [message for message in all_messages.find() if str(timestamp) == (str((message['header'])['id']))]
-        #current_cones = (current_message['data'])['cones']
-        # print()
-        #print(current_message)
-        # print()
-        dataset_by_time_and_cone = [cone for cone in (((current_message[0])['data'])['cones']) if pointType == cone['type']]
-        #print(dataset_by_time_and_cone)
-        #print(type(dataset_by_time_and_cone[1]))
+        
+        tmp =  ((all_messages.find_one()['data'])['cones'])
+        dataset_by_time_and_cone = [cone for cone in tmp if pointType == cone['type']]
+        
+        # for obj in tmp:
+        #     color = obj['type']
+        #     if(color == pointType):
+        #         dataset_by_time_and_cone.append(obj)
+        
         xList = []
         yList =[]
         tList=[]
         for ob in dataset_by_time_and_cone:
-            makeLists(xList,yList,tList)
-
-        data_dict = makedata(xList,yList,tList,pointType)
+            makeLists(xList,yList,tList,ob)
+        # print(xList)
+        data_dict = makedata(xList,yList,tList,pointType) 
         
-        frame["data"].append(data_dict)
-    frame["layout"]["images"].append(imagesList[i])
-    i+=1
-    fig_dict["frames"].append(frame)
-    slider_step = {"args": [
-        [timestamp],
-        {"frame": {"duration": 1, "redraw": False},#change duration for real speed
-         "mode": "immediate",
-         "transition": {"duration": 1}}#and here
-    ],
-        "label": timestamp,
-        "method": "animate"}
-    sliders_dict["steps"].append(slider_step)
+        #data_dict = go.Scatter(data_dict2)
+        
+        #print(type(data_dict))
+        fig_dict["data"].append(data_dict)
 
-#print("stuk")
-#print((fig_dict["frames"]))
-fig_dict["layout"]["sliders"] = [sliders_dict]
+    #make frames:
+    # print(len(timestampList))
+    # print(len(set(timestampList)))
+    #print(idstampList)
+    i=0
+    for timestamp in idstampList:
+        #print(i)
+        #i = i+1
+        frame = {"data": [], "name": str(timestamp), "layout": {}}
+        frame["layout"]["images"] = []
+        for pointType in types:
+            current_message = [message for message in all_messages.find() if str(timestamp) == (str((message['header'])['id']))]
+            #current_cones = (current_message['data'])['cones']
+            # print()
+            #print(current_message)
+            # print()
+            dataset_by_time_and_cone = [cone for cone in (((current_message[0])['data'])['cones']) if pointType == cone['type']]
+            #print(dataset_by_time_and_cone)
+            #print(type(dataset_by_time_and_cone[1]))
+            xList = []
+            yList =[]
+            tList=[]
+            for ob in dataset_by_time_and_cone:
+                makeLists(xList,yList,tList,ob)
 
-fig = go.Figure(fig_dict)
-pio.write_html(fig, file='../tomer_git/WebDashboard/static/picture_test.html',auto_play = False)#, auto_open=True)
-#url=chart_studio.plotly.plot(fig, filename = 'picture_test',auto_open = False,render_mode = 'webgl')
-#print(url)
-#fig.show()
+            data_dict = makedata(xList,yList,tList,pointType)
+            
+            frame["data"].append(data_dict)
+        frame["layout"]["images"].append(imagesList[i])
+        i+=1
+        fig_dict["frames"].append(frame)
+        slider_step = {"args": [
+            [timestamp],
+            {"frame": {"duration": 1, "redraw": False},#change duration for real speed
+            "mode": "immediate",
+            "transition": {"duration": 1}}#and here
+        ],
+            "label": timestamp,
+            "method": "animate"}
+        sliders_dict["steps"].append(slider_step)
 
+    #print("stuk")
+    #print((fig_dict["frames"]))
+    fig_dict["layout"]["sliders"] = [sliders_dict]
+
+    fig = go.Figure(fig_dict)
+    if(debug == True):
+        fig.show()
+    pio.write_html(fig, file='../tomer_git/WebDashboard/static/picture_test3.html',auto_play = False)#, auto_open=True)
+#end coneout
+
+
+if(debug == True):
+    coneout()
 
 # @app.route("/")
 # def home():
