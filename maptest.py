@@ -216,8 +216,8 @@ def mapout():
     fig_dict["layout"]["sliders"] = [sliders_dict]
 
     fig = go.Figure(fig_dict)
-    pio.write_html(fig, file='../tomer_git/WebDashboard/static/cone_map.html',auto_play = False)#, auto_open=True)
-#end of map out
+    pio.write_html(fig, file='C:/Users/tbita/OneDrive/Documents/formula/dashboard/tomer_git/WebDashboard/static/cone_map.html',auto_play = False)#, auto_open=True)
+#end of map out"C:\Users\tbita\OneDrive\Documents\formula\dashboard\tomer_git\WebDashboard\static\cone_map.html"
 
 
 

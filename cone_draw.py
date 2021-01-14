@@ -254,7 +254,7 @@ def coneout():
     fig = go.Figure(fig_dict)
     if(debug == True):
         fig.show()
-    pio.write_html(fig, file='../tomer_git/WebDashboard/static/picture_test3.html',auto_play = False)#, auto_open=True)
+    pio.write_html(fig, file='C:/Users/tbita/OneDrive/Documents/formula/dashboard/tomer_git/WebDashboard/static/picture_test3.html',auto_play = False)#, auto_open=True)
 #end coneout
 
 

@@ -76,6 +76,9 @@ def State():
     maptest.mapout()
     cone_draw.coneout()
     return render_template('State.html')
+@app.route("/Control")
+def Control():
+    return render_template('Control.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
