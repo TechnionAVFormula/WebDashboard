@@ -19,19 +19,24 @@ client = pymongo.MongoClient(mongo_uri)
 
 import json
 
+def stampToSeconds(timestamp):
+    just_time = [int(i) for i in timestamp[11:-1].split(":")]
+    return just_time[0] * 360 + just_time[1] * 60 + just_time[2]
+
 def mapout(db_name):
     db = client[db_name]
 
     all_cone_messages = db.TechnionFormulaAV.Messages.ConeMap
     with open('fakeline.json') as json_file:
         all_path_messages = json.load(json_file)
-
+    all_path_messages = all_path_messages["TechnionFormulaAV"]["Messages"]["ControlDashbaord"]
     data_dict = {}
 
     for doc in all_cone_messages.find():
         # Extract the cone data and timestamp
         cones = doc["data"]["cones"]
         timestamp = doc["header"]["timestamp"]
+        path = filter(lambda x: stampToSeconds(x) <= stampToSeconds(timestamp), all_path_messages)[-1]  
 
         # Initialize lists to store the x and y values, and the color of the cones
         x_vals_blue = []
