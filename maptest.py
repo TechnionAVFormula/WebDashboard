@@ -29,16 +29,17 @@ app = Flask(__name__)
 mongo_uri = "mongodb://localhost:27017/"
 client = pymongo.MongoClient(mongo_uri)
 #client.list_database_names()
-db = client["formula_2020-05-17-19:54:34"]
-xx = db.list_collection_names()
+db = client["formula-db"]
 #optimal_route
 import json
 temp_fake_line = open("fakeline.json", 'r')
 
 
-def mapout():
+def mapout(db_name):
+    db = client[db_name]
+
     all_cone_messages = db.TechnionFormulaAV.Messages.ConeMap
-    all_path_messages = json.load(temp_fake_line) #need to be dashboard messages.ControlDashbaord.optimal_route
+#    all_path_messages = json.load(temp_fake_line) #need to be dashboard messages.ControlDashbaord.optimal_route
     yellow_cones = []
     blue_cones = []
     position=[]

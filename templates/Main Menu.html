@@ -41,59 +41,17 @@
 <table id="myTable">
   <tr class="header">
     <th style="width:25%;">Name</th>
-    <th style="width:25%;">Country</th>
-    <th style="width:25%;">thing</th>
+    <th style="width:25%;">Day</th>
+    <th style="width:25%;">Time</th>
     <th style="width:25%;">do</th>
-  </tr>
-  <tr>
-    <td><a class="nav-link" href="State/{{g}}">{{g}} </a></td>
-    <td> <a>NAIN</a></td>
-    <td>{{x}}</td>
-    <td>Germany</td>
   </tr>
   {% for row in simulations %}
     <tr>
-    {% for day in row %}
-      <td><a class="nav-link" href="State/{{day}}">{{day}}</a></td>
+    {% for name in row %}
+      <td><a class="nav-link" href="State/{{row[0]}}">{{name}}</a></td>
     {% endfor %}
     </tr>
   {% endfor %}
-  <tr>
-    <td>simulations[0] </a></td>
-    <td> <a>NAIN</a></td>
-    <td>{{x}}</td>
-    <td>Germany</td>
-  </tr>
-  <tr>
-    <td>Berglunds snabbkop</td>
-    <td>Sweden</td>
-    <td>{{x}}</td>
-    <td>Germany</td>
-  </tr>
-  <tr>
-    <td>Island Trading</td>
-    <td>UK</td>
-    <td>{{x}}</td>
-    <td>Germany</td>
-  </tr>
-  <tr>
-    <td>Koniglich Essen</td>
-    <td>Germany</td>
-    <td>{{x}}</td>
-    <td>Germany</td>
-  </tr>
-    <tr>
-    <td>Bob Jobs</td>
-    <td>UK</td>
-    <td>{{x}}</td>
-    <td>Germany</td>
-  </tr>
-    <tr>
-    <td>Steve Brooks</td>
-    <td>USA</td>
-    <td>{{x}}</td>
-    <td>Germany</td>
-  </tr>
 </table>
 </div>
 <!-- <script src="assets/js/jquery.min.js"></script>

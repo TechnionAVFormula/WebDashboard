@@ -27,7 +27,7 @@ app = Flask(__name__)
 mongo_uri = "mongodb://localhost:27017/"
 client = pymongo.MongoClient(mongo_uri)
 # print(client.list_database_names())
-db = client["formula_2020-05-17-19:54:34"]#formula_test
+dbs = ["formula-db"]#formula_test
 # print(db.list_collection_names())
 
 #This happened probably because the MongoDB service isn't started. Follow the below steps to start it:
@@ -47,24 +47,28 @@ def home():
 def user():
     # session["person"] = name
     #address = wtforms.TextAreaField(u'Mailing Address', [wtforms.validators.optional(), wtforms.validators.length(max=200)])
-    collection = db.TechnionFormulaAV.Messages.GPSSensor
-    time = (collection.find_one()["header"])["timestamp"]
-    time =  time[0:10]
-    row1 = "%s"%time
-    row2 = "hello"
-    row3 = "thing"
-    row4 = "doooooo"
-    rows = [row1,row2,row3,row4]
-    mulitiple = [rows,rows,rows,rows]
-    return render_template("Main Menu.html", g = time,simulations = mulitiple)
+    rows = []
+    for db_name in dbs:
+        db = client[db_name]
+        collection = db.TechnionFormulaAV.Messages.GPSSensor
+        daytime = (collection.find_one()["header"])["timestamp"]
+        day =  daytime[0:10]
+        time = daytime[11:23]
 
-@app.route("/State/<time>")
-def datab(time):
+        row1 = "%s"%db_name
+        row2 = "%s"%day
+        row3 = "%s"%time
+        row4 = "doooooo"
+        row = [row1, row2, row3, row4]
+        rows.append(row)
+    return render_template("Main Menu.html",simulations = rows)
+
+@app.route("/State/<db_name>")
+def datab(db_name):
     # post_id = ObjectId("5ec16c5f801dc24573781066")
-    collection = db.TechnionFormulaAV.Messages.GPSSensor
-    maptest.mapout()
+    maptest.mapout(db_name)
     # cone_draw.coneout()
-    return render_template("State.html", Date = time)#,urlmap=maptest.url,urlcamera = cone_draw.url)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
+    return render_template("State.html", Database = db_name)#,urlmap=maptest.url,urlcamera = cone_draw.url)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
 
 @app.route("/admin")
 def admin():

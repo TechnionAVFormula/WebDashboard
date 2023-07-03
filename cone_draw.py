@@ -1,6 +1,8 @@
 #pymongo to connect to db
 import pymongo
 
+import os
+
 #probobly dont need
 from flask import Flask, redirect,url_for,render_template, session
 import plotly.graph_objects as go
@@ -254,7 +256,7 @@ def coneout():
     fig = go.Figure(fig_dict)
     if(debug == True):
         fig.show()
-    pio.write_html(fig, file='C:/Users/tbita/OneDrive/Documents/formula/dashboard/tomer_git/WebDashboard/static/picture_test3.html',auto_play = False)#, auto_open=True)
+    pio.write_html(fig, file=os.getcwd()+'/static/picture_test3.html',auto_play = False)#, auto_open=True)
 #end coneout
 
 
