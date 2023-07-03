@@ -100,7 +100,6 @@ def makeLists(xlist,ylist,tlist,ob):
 # for obj in yellow_cones:
 #     print(obj['coneId'])
 def coneout():
-
     #make list of IDs
     idstampList = list(range(2,200))
     #make list of types of dots
