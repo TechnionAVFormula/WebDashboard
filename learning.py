@@ -11,24 +11,24 @@ from bson.objectid import ObjectId
 
 #import bootstrap
 #from flask.bootstrap import Bootstrap
-import wtforms
+#for now? import wtforms
 #import open cv for picture color
 import numpy as np
-import cv2
+# for now import cv2
 
 #import all the plotly stuff
 import maptest
-import cone_draw
+# import cone_draw
 
 app = Flask(__name__)
 #ootstrap = Bootstrap(app)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/formula_test"
+# app.config["MONGO_URI"] = "mongodb://localhost:27017/formula_2020-05-17-19:54:34"#"mongodb://localhost:27017/formula_test"
 
 mongo_uri = "mongodb://localhost:27017/"
 client = pymongo.MongoClient(mongo_uri)
-#client.list_database_names()
-db = client.formula_test
-db.list_collection_names()
+# print(client.list_database_names())
+db = client["formula_2020-05-17-19:54:34"]#formula_test
+# print(db.list_collection_names())
 
 #This happened probably because the MongoDB service isn't started. Follow the below steps to start it:
 #Go to Control Panel and click on Administrative Tools.
@@ -60,11 +60,10 @@ def user():
 
 @app.route("/State/<time>")
 def datab(time):
-    post_id = ObjectId("5ec16c5f801dc24573781066")
+    # post_id = ObjectId("5ec16c5f801dc24573781066")
     collection = db.TechnionFormulaAV.Messages.GPSSensor
-    id = (collection.find_one({"_id":post_id}))#["header"]
     maptest.mapout()
-    cone_draw.coneout()
+    # cone_draw.coneout()
     return render_template("State.html", Date = time)#,urlmap=maptest.url,urlcamera = cone_draw.url)#(collection.find_one()["header"])["timestamp"])#online_users=id,y = collection.find_one()["header"], g = (collection.find_one()["header"])["timestamp"])
 
 @app.route("/admin")
@@ -74,7 +73,7 @@ def admin():
 @app.route("/State")
 def State():
     maptest.mapout()
-    cone_draw.coneout()
+    # cone_draw.coneout()
     return render_template('State.html')
 @app.route("/Control")
 def Control():

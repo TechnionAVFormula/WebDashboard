@@ -24,23 +24,27 @@ import numpy as np
 #import cv2
 app = Flask(__name__)
 #ootstrap = Bootstrap(app)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/formula_test"
+# app.config["MONGO_URI"] = "mongodb://localhost:27017/formula_test"
 
 mongo_uri = "mongodb://localhost:27017/"
 client = pymongo.MongoClient(mongo_uri)
 #client.list_database_names()
-db = client.formula_test
-db.list_collection_names()
-
+db = client["formula_2020-05-17-19:54:34"]
+xx = db.list_collection_names()
+#optimal_route
+import json
+temp_fake_line = open("fakeline.json", 'r')
 
 
 def mapout():
-    all_messages = db.TechnionFormulaAV.Messages.ConeMap
+    all_cone_messages = db.TechnionFormulaAV.Messages.ConeMap
+    all_path_messages = json.load(temp_fake_line) #need to be dashboard messages.ControlDashbaord.optimal_route
     yellow_cones = []
     blue_cones = []
     position=[]
     car =[]
-    for obj in all_messages.find():
+    for obj in all_cone_messages.find():
+        # print(obj)
         time = (obj['header'])['timestamp']
         cone_array = (obj['data'])['cones']
         for cone in cone_array:
@@ -50,15 +54,14 @@ def mapout():
             if cone['type'] == "Yellow":
                 yellow_cones.append((cone,time))
             else:
+                print("in blue")
                 blue_cones.append((cone,time))
 
-    # for obj in yellow_cones:
-    #     print(obj['coneId'])
     start_of_time = 11
     end_of_time = 19
     #make list of timestamps
     timestampList = []  #year
-    for obj in all_messages.find():
+    for obj in all_cone_messages.find():
         time = (obj['header'])['timestamp']
         #time.split("T")[0]
         time = time[start_of_time:end_of_time]
@@ -70,17 +73,17 @@ def mapout():
     types = ["Blue", "Yellow"]#, "Car"]    continents 
 
     # make figure
-    fig_dict = {
+    marker_data = {
         "data": [],
         "layout": {},
         "frames": []
     }
 
     # fill in most of layout
-    fig_dict["layout"]["xaxis"] = {"range": [min(position)-1, max(position)+1], "title": "X location"}
-    fig_dict["layout"]["yaxis"] = {"range": [min(position)-1, max(position)+1], "title": "Y location"}
-    fig_dict["layout"]["hovermode"] = "closest"
-    fig_dict["layout"]["updatemenus"] = [
+    marker_data["layout"]["xaxis"] = {"range": [min(position)-1, max(position)+1], "title": "X location"}
+    marker_data["layout"]["yaxis"] = {"range": [min(position)-1, max(position)+1], "title": "Y location"}
+    marker_data["layout"]["hovermode"] = "closest"
+    marker_data["layout"]["updatemenus"] = [
         {
             "buttons": [
                 {
@@ -127,12 +130,13 @@ def mapout():
         "steps": []
     }
 
+    line_data = marker_data.copy()
     #data
     #need to make 
     time = min(timestampList)
-    for pointType in types:
-        
-        tmp =  ((all_messages.find_one()['data'])['cones'])
+    for pointType in types:#check if this is the thing being printed
+        # print("in type ", pointType)
+        tmp =  ((all_cone_messages.find_one()['data'])['cones'])
         dataset_by_time_and_cone = [cone for cone in tmp if pointType == cone['type']]
         
         # for obj in tmp:
@@ -140,67 +144,77 @@ def mapout():
         #     if(color == pointType):
         #         dataset_by_time_and_cone.append(obj)
         
-
+        # print(dataset_by_time_and_cone)
         xList = []
         yList =[]
         tList=[]
         for ob in dataset_by_time_and_cone:
             xList.append(ob['x'])
             yList.append(ob['y'])
-            tList.append(ob['coneId'])
+            tList.append(ob.get('coneId',0))
 
         data_dict = {
             "x": xList,#list(dataset_by_time_and_cone[1]),
             "y": yList,
             "mode": "markers",#i think change to line here when car
             "text":tList,
+            "name": pointType,
             
-            # "marker": {
-            #    "sizemode": "area",
-            #    "sizeref": 200000,
-            #    "size": list(dataset_by_year_and_cont["pop"])
-            # },
-            "name": pointType
+            "marker": {
+               "size": 10,
+               "color": pointType,
+            },
         }
-        fig_dict["data"].append(data_dict)
+        marker_data["data"].append(data_dict)
 
     #make frames:
-    # print(len(timestampList))
-    # print(len(set(timestampList)))
 
-    for timestamp in timestampList:
+    for timestamp in timestampList: #shouldnt be here if have other one?
         #print(i)
         #i = i+1
         frame = {"data": [], "name": str(timestamp)}
+        path_frame = {"data": [], "name": str(timestamp)}
         for pointType in types:
-            current_message = [message for message in all_messages.find() if timestamp == ((message['header'])['timestamp'])[start_of_time:end_of_time]]
-            #current_cones = (current_message['data'])['cones']
-            # print()
-            # print(current_message)
-            # print()
-            dataset_by_time_and_cone = [cone for cone in (((current_message[0])['data'])['cones']) if pointType == cone['type']]
-            #print(dataset_by_time_and_cone)
-            #print(type(dataset_by_time_and_cone[1]))
+            current_cone_message = [message for message in all_cone_messages.find() if timestamp == ((message['header'])['timestamp'])[start_of_time:end_of_time]]
+            # current_path_message = [message for message in all_path_messages.find() if timestamp == ((message['header'])['timestamp'])[start_of_time:end_of_time]]
+            
+            dataset_by_time_and_cone = [cone for cone in (((current_cone_message[0])['data'])['cones']) if pointType == cone['type']]
+            #insert get for path 
+            
             xList = []
             yList =[]
             tList=[]
             for ob in dataset_by_time_and_cone:
                 xList.append(ob['x'])
                 yList.append(ob['y'])
-                tList.append(ob['coneId'])
+                tList.append(ob.get('coneId',0))
 
-            data_dict = {
+            cone_data_dict = {
                 "x": xList,
                 "y": yList,
                 "mode": "markers",
                 "text":tList,
-                "name": pointType
+                "name": pointType,
+                "marker": {
+                "size": 10,
+                "color": pointType,
+                },
+            }
+            path_data_dict = {# don t forget to add 00 at start
+                "x": xList,#################change to path place
+                "y": yList,################## chang to path place
+                "mode": "line",
+                "text":"going",
+                "name":"planned path"
             }
             
             #print(data_dict)
-            frame["data"].append(data_dict)
+            frame["data"].append(cone_data_dict)
+            # path_frame["data"].append(path_data_dict)
+            
         
-        fig_dict["frames"].append(frame)
+        marker_data["frames"].append(frame)
+        # line_data["frames"].append(path_frame)
         slider_step = {"args": [
             [timestamp],
             {"frame": {"duration": 300, "redraw": False},#change duration
@@ -213,10 +227,14 @@ def mapout():
 
     #print("stuk")
     #print((fig_dict["frames"]))
-    fig_dict["layout"]["sliders"] = [sliders_dict]
+    marker_data["layout"]["sliders"] = [sliders_dict]
+    line_data["layout"]["sliders"] = [sliders_dict]
 
-    fig = go.Figure(fig_dict)
-    pio.write_html(fig, file='C:/Users/tbita/OneDrive/Documents/formula/dashboard/tomer_git/WebDashboard/static/cone_map.html',auto_play = False)#, auto_open=True)
+    fig = go.Figure(marker_data)#remove marker_Data!!!!!!!???marker_data
+    # fig.add_trace(marker_data)
+    # fig.add_trace(line_data)
+    fig.add_trace(go.Scatter(x=[0], y=[0], mode="markers", marker=dict(size=20, color="red"), name="car"))
+    pio.write_html(fig, file='./static/cone_map.html',auto_play = False)
 #end of map out"C:\Users\tbita\OneDrive\Documents\formula\dashboard\tomer_git\WebDashboard\static\cone_map.html"
 
 
@@ -232,5 +250,6 @@ def mapout():
 #     return render_template('State.html',url=url)
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 #     app.run(debug=True)
+    mapout()
